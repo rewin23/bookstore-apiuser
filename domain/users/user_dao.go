@@ -3,7 +3,10 @@ package users
 
 import (
 	"github.com/rewin23/bookstore-apiuser/utils/errors"
+	"github.com/rewin23/bookstore-apiuser/utils/date_utils"
+
 	"fmt"
+
 ) 
 
 var (
@@ -30,6 +33,7 @@ func (user *User ) Save() *errors.RestErr {
 		return errors.NewNotFoundError(fmt.Sprintf("user %d already exist", user.Id))
 	}
 
+	user.DateCreated = date_utils.GetNowString()
 	usersDB[user.Id] = user
 	return nil
 }
