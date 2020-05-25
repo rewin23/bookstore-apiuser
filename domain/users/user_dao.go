@@ -2,6 +2,7 @@ package users
 
 
 import (
+	"github.com/rewin23/bookstore-apiuser/datasources/mysql/users_db"
 	"github.com/rewin23/bookstore-apiuser/utils/errors"
 	"github.com/rewin23/bookstore-apiuser/utils/date_utils"
 
@@ -14,11 +15,16 @@ var (
 )
 
 func (user *User) Get() *errors.RestErr {
+
+    if err := users_db.Client.Ping(); err != nil {
+		panic(err)
+	}
+
 	result := usersDB[user.Id]
 	if result == nil {
 		return errors.NewNotFoundError(fmt.Sprintf("user %d not found", user.Id))
 	}
-
+ 
 	user.Id = result.Id
 	user.FirstName = result.FirstName
 	user.LastName = result.LastName
